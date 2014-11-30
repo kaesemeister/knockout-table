@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Knockout Table</title>
+        <link rel="stylesheet" href="style/screen.css"/>
+    </head>
+    <body>
+
+        <!-- ko table: table --><!-- /ko -->
+
+        <script type="text/html" id="tpl-example-cell-username">
+            <a data-bind="click: onUsernameClick, text: username"></a>
+        </script>
+
+        <script type="text/html" id="tpl-knockout-table">
+            <input type="text" placeholder="Filter" data-bind="value: filterString"/>
+            <table>
+                <thead>
+                    <tr data-bind="foreach: columns">
+                        <th data-bind="text: label"></th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: rows">
+                    <tr data-bind="foreach: $parent.columns">
+                        <td data-bind="template: {name: template, data: valueFn($parent)}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <a data-bind="click: onPreviousPageClick">&laquo;</a>
+                <!-- ko text: activePage() + 1 --><!-- /ko --> /
+                <!-- ko text: pageCount() --><!-- /ko -->
+                <a data-bind="click: onNextPageClick">&raquo;</a>
+            </div>
+        </script>
+
+        <script type="text/html" id="tpl-knockout-table-cell-text">
+            <!-- ko text: $data --><!-- /ko -->
+        </script>
+
+        <script type="text/html" id="tpl-knockout-table-cell-html">
+            <span data-bind="html: $data"></span>
+        </script>
+
+        <script src="vendor/jquery.min.js"></script>
+        <script src="vendor/knockout.js"></script>
+        <script src="../knockout-table.js"></script>
+        <script src="example-raw.js"></script>
+    </body>
+</html>
