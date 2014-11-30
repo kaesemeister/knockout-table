@@ -1,16 +1,6 @@
 # knockout-table
 
-## Note
-
 very early state, suggestions are welcome :)
-
-This is possible so far
-
-- abitrary dataprovider function. async or static.
-- paging and filtering (has to be done by dataprovider function) but the viewmodel manages state
-- knockoutbindings (e.g. click events) for cells
-- html cells
-- ...
 
 ## Motivation
 
@@ -30,10 +20,24 @@ There are some good solutions but there were always at least one detail which wa
 My aim is not to define the perfect datatable which beats all other implementations.
 I want to provide a good foundation which is made for knockout and can be customized easily.
 
+## Progress
+
+This is possible so far
+
+- abitrary dataprovider function. async or static.
+- paging and filtering (has to be done by dataprovider function) but the viewmodel manages state
+- knockoutbindings (e.g. click events) for cells
+- html cells
+- ...
+
 ## Dependencies
 
 - Knockout
 - jQuery
+
+## Examples
+
+- [Raw without Styling](https://rawgit.com/kaesemeister/knockout-table/master/examples/example-raw.html)
 
 ## Usage
 
