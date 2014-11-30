@@ -1,0 +1,19 @@
+{
+  "name": "knockout-table",
+  "main": "knockout-table.js",
+  "version": "0.0.1",
+  "homepage": "https://github.com/kaesemeister/knockout-table",
+  "authors": [
+    "Michael Drescher <kaesemeister@gmail.com>"
+  ],
+  "description": "table framework for knockout",
+  "keywords": [
+    "knockout",
+    "table",
+    "datatable",
+    "filter",
+    "paging",
+    "sort"
+  ],
+  "license": "MIT"
+}
