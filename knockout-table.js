@@ -107,11 +107,11 @@
     function TableColumn(table, config)
     {
         var self = this;
-        this.label = config.label;
-        this.field = config.field;
-        this.template = config.template || 'tpl-knockout-table-cell-text';
+        $.extend(this, config);
+        this.table = table;
+        this.template = this.template || 'tpl-knockout-table-cell-text';
 
-        this.valueFn = config.valueFn || function(row) {
+        this.valueFn = this.valueFn || function(row) {
             return row[self.field];
         };
     }
