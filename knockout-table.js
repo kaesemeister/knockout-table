@@ -45,6 +45,7 @@
         this.dataFn = config.dataFn;
         this.pageSize = config.pageSize || 20;
 
+        this.loading = ko.observable(false);
         this.rows = ko.observable();
         this.totalRowCount = ko.observable();
         this.filteredRowCount = ko.observable();
@@ -72,6 +73,7 @@
     Table.prototype.load = function()
     {
         var self = this;
+        this.loading(true);
         var res = this.dataFn({
             page: this.activePage(),
             pageSize: this.pageSize,
@@ -81,6 +83,8 @@
             self.rows(res.rows);
             self.totalRowCount(res.totalRowCount);
             self.filteredRowCount(res.filteredRowCount);
+        }).always(function() {
+            self.loading(false);
         });
     };
 
