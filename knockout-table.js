@@ -115,6 +115,17 @@
         this.table = table;
         this.template = this.template || 'tpl-knockout-table-cell-text';
 
+        if (!this.valueFn) {
+            if (this.field) {
+                this.valueFn = function(row) {
+                    return row[self.field];
+                };
+            } else {
+                this.valueFn = function(row) {
+                    return row;
+                };
+            }
+        }
         this.valueFn = this.valueFn || function(row) {
             return row[self.field];
         };
