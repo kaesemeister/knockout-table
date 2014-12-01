@@ -43,14 +43,14 @@
             return new TableColumn(self, column);
         });
         this.dataFn = config.dataFn;
-        this.pageSize = config.pageSize || 20;
+        this.pageSize = ko.observable(config.pageSize || 20);
 
         this.loading = ko.observable(false);
         this.rows = ko.observable();
         this.totalRowCount = ko.observable();
         this.filteredRowCount = ko.observable();
         this.pageCount = ko.computed(function() {
-            return Math.ceil(self.filteredRowCount() / self.pageSize);
+            return Math.ceil(self.filteredRowCount() / self.pageSize());
         });
         this.activePage = ko.observable(0);
         this.filterString = ko.observable('');
@@ -66,6 +66,10 @@
         this.onNextPageClick = function() {
             self.loadNextPage();
         };
+
+        this.onReloadClick = function() {
+            self.load();
+        };
     }
 
     Table.prototype.load = function()
@@ -79,7 +83,7 @@
                 var ss = column.sortState();
                 if (ss != 'none') {
                     order.push({
-                        column: column.key,
+                        column: column.config,
                         direction: ss,
                     });
                 }
@@ -88,7 +92,7 @@
 
         var res = this.dataFn({
             page: this.activePage(),
-            pageSize: this.pageSize,
+            pageSize: this.pageSize(),
             filterString: this.filterString(),
             order: order,
         });
@@ -96,6 +100,9 @@
             self.rows(res.rows);
             self.totalRowCount(res.totalRowCount);
             self.filteredRowCount(res.filteredRowCount);
+            if (res.pageSize) {
+                self.pageSize(res.pageSize);
+            }
         }).always(function() {
             self.loading(false);
         });
@@ -137,8 +144,8 @@
 
     function TableColumn(table, config)
     {
-        var self = this;
-        $.extend(this, config);
+        var self = $.extend(this, config);
+        this.config = config;
         this.table = table;
         this.template = this.template || 'tpl-knockout-table-cell-text';
         this.sortable = this.sortable ? true : false;
