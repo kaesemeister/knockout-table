@@ -50,6 +50,7 @@ function Example()
             });
         }
     });
+    this.table.load();
 }
 
 function ExampleRow(example, config)

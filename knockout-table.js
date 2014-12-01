@@ -59,8 +59,6 @@
             self.load();
         });
 
-        this.load();
-
         this.onPreviousPageClick = function() {
             self.loadPreviousPage();
         };
@@ -74,10 +72,25 @@
     {
         var self = this;
         this.loading(true);
+
+        var order = [];
+        this.columns.forEach(function(column) {
+            if (column.sortable) {
+                var ss = column.sortState();
+                if (ss != 'none') {
+                    order.push({
+                        column: column.key,
+                        direction: ss,
+                    });
+                }
+            }
+        });
+
         var res = this.dataFn({
             page: this.activePage(),
             pageSize: this.pageSize,
             filterString: this.filterString(),
+            order: order,
         });
         $.when(res).done(function(res) {
             self.rows(res.rows);
@@ -106,6 +119,20 @@
         }
     };
 
+    Table.prototype.toggleSortState = function(column)
+    {
+        // disable sort state for all other columns
+        this.columns.forEach(function(otherColumn) {
+            if (otherColumn != column) {
+                otherColumn.sortState('none');
+            }
+        });
+
+        // toggle columns state
+        column.toggleSortState();
+        this.load();
+    };
+
     // TableColumnViewModel ===================================================
 
     function TableColumn(table, config)
@@ -114,6 +141,8 @@
         $.extend(this, config);
         this.table = table;
         this.template = this.template || 'tpl-knockout-table-cell-text';
+        this.sortable = this.sortable ? true : false;
+        this.sortState = ko.observable(this.sortState || 'none');
 
         if (!this.valueFn) {
             if (this.field) {
@@ -126,9 +155,24 @@
                 };
             }
         }
-        this.valueFn = this.valueFn || function(row) {
-            return row[self.field];
+
+        this.onClick = function()
+        {
+            if (self.sortable) {
+                table.toggleSortState(self);
+            }
         };
     }
+
+    TableColumn.sortToggleMap = {
+        'none': 'asc',
+        'asc': 'desc',
+        'desc': 'asc',
+    };
+
+    TableColumn.prototype.toggleSortState = function()
+    {
+        this.sortState(TableColumn.sortToggleMap[this.sortState()]);
+    };
 
 });
