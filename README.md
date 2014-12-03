@@ -4,7 +4,7 @@ very early state, suggestions are welcome :)
 
 ## Motivation
 
-I've searched the web for a whole day to find a datagrid implementation which fits my needs
+I've searched the web for several days to find a datagrid implementation which fits my needs
 I had the following requirements
 
 - **good knockout integration**
@@ -17,6 +17,8 @@ I had the following requirements
 
 There are some good solutions but there were always at least one detail which was not satisfying.
 
+take a look at: https://github.com/labory/knockout-bootstrap-sortable-data-table
+
 My aim is not to define the perfect datatable which beats all other implementations.
 I want to provide a good foundation which is made for knockout and can be customized easily.
 
@@ -25,7 +27,7 @@ I want to provide a good foundation which is made for knockout and can be custom
 This is possible so far
 
 - abitrary dataprovider function. async or static.
-- paging and filtering (has to be done by dataprovider function) but the viewmodel manages state
+- sorting, paging and filtering (has to be done by dataprovider function) but the viewmodel manages state
 - knockoutbindings (e.g. click events) for cells
 - html cells
 - ...
