@@ -27,7 +27,9 @@ function Example()
             var pageSize = config.pageSize;
             var filterString = config.filterString;
             return $.get('./mockdata.json').then(function(rows) {
-
+                
+                rows = JSON.parse(rows);
+                
                 // simulate filtering and paging
                 var filteredRows = rows.filter(function(row) {
                     return row.username.indexOf(filterString) !== -1
