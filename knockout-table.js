@@ -44,7 +44,7 @@
         });
         this.dataFn = config.dataFn;
         this.pageSize = ko.observable(config.pageSize || 20);
-
+        this.activePage = ko.observable(0);
         this.loading = ko.observable(false);
         this.rows = ko.observable();
         this.totalRowCount = ko.observable();
@@ -52,7 +52,23 @@
         this.pageCount = ko.computed(function() {
             return Math.ceil(self.filteredRowCount() / self.pageSize());
         });
-        this.activePage = ko.observable(0);
+
+        this.pages = ko.computed(function(){
+            var p = [];
+            for (var i = 1; i <= self.pageCount(); i++) {
+                p.push(i);
+            }
+            return p;
+        });
+
+        this.isNotFirstPage = ko.computed(function () {
+            return self.checkFirst();
+        });
+        this.isNotLastPage = ko.computed(function () {
+            return self.checkLast();
+        });
+
+        
         this.filterString = ko.observable('');
         this.filterString.subscribe(function() {
             self.activePage(0);
@@ -65,6 +81,10 @@
 
         this.onNextPageClick = function() {
             self.loadNextPage();
+        };
+
+        this.onPageClick = function(page) {
+            self.loadPage(page - 1);
         };
 
         this.onReloadClick = function() {
@@ -117,6 +137,14 @@
         }
     };
 
+    Table.prototype.loadPage = function(page)
+    {
+        var activePage = this.activePage();
+        this.activePage(page);
+        this.load();
+        
+    };
+
     Table.prototype.loadNextPage = function()
     {
         var activePage = this.activePage();
@@ -124,6 +152,24 @@
             this.activePage(activePage + 1);
             this.load();
         }
+    };
+
+    Table.prototype.checkFirst = function()
+    {
+        var activePage = this.activePage();
+        if(activePage === 0)
+            return false;
+        else
+            return true;
+    };
+
+    Table.prototype.checkLast = function()
+    {
+        var activePage = this.activePage();
+        if((this.pageCount() - 1) === activePage)
+            return false;
+        else
+            return true;
     };
 
     Table.prototype.toggleSortState = function(column)
