@@ -28,10 +28,18 @@
                 </tbody>
             </table>
             <div>
-                <a data-bind="click: onPreviousPageClick">&laquo;</a>
-                <!-- ko text: activePage() + 1 --><!-- /ko --> /
-                <!-- ko text: pageCount() --><!-- /ko -->
-                <a data-bind="click: onNextPageClick">&raquo;</a>
+                <!-- ko if: isNotFirstPage() -->
+                    <a href="#" data-bind="click: onPreviousPageClick">&laquo;</a>
+                <!-- /ko -->
+
+                <!-- ko foreach: pages() -->
+                    <a href="#" data-bind="text: $data, click: $root.onPageClick"></a>
+                <!-- /ko -->
+
+                <!-- ko if: isNotLastPage()  -->
+                    <a href="#" data-bind="click: onNextPageClick">&raquo;</a>
+                <!-- /ko -->
+                
             </div>
         </script>
 
@@ -42,10 +50,17 @@
         <script type="text/html" id="tpl-knockout-table-cell-html">
             <span data-bind="html: $data"></span>
         </script>
-
+        
         <script src="vendor/jquery.min.js"></script>
         <script src="vendor/knockout.js"></script>
         <script src="../knockout-table.js"></script>
         <script src="example-raw.js"></script>
+
+        <script>
+            $(function() {
+                var example = new Example();
+                ko.applyBindings(example);
+            });
+        </script>
     </body>
 </html>
